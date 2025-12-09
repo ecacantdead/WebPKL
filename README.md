@@ -41,7 +41,7 @@ Website ini dibuat dengan sepenuh hati oleh 3 orang
 ![Logo Perumda](assets/adminberita.png)
 
 ### Halaman Layanan
-![Logo Perumda](assets/adminLayanan.png)
+![Logo Perumda](assets/adminlayanan.png)
 
 
 Terimakasih telah menyempatkan waktu untuk melihat informasi secara rinci
