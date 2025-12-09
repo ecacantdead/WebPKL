@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Buat Akun (All-in-One)</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* --- CSS UTAMA (TIDAK DIOBOK-OBOk) --- */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        /* Gaya Role Selector (TIDAK DIOBOK-OBOk) */
+        .role-selector {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .role-button {
+            flex: 1;
+            padding: 20px 0;
+            border: 1px solid #ccc;
+            background-color: #f7f7f7;
+            color: #555;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease-in-out;
+            outline: none;
+        }
+
+        .role-button:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        .role-button:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .role-button.active {
+            background-color: #ffffff;
+            color: #007bff;
+            font-weight: bold;
+            border-color: #007bff;
+            border-bottom-color: #ffffff;
+        }
+
+        /* Gaya Form Input Utama (TIDAK DIOBOK-OBOk) */
+        .register-form input[type="text"],
+        #nomorServerContainer input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        /* [START] KODE BARU UNTUK IKON MATA */
+        /* CONTAINER PASSWORD */
+        .password-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .password-container input[type="password"],
+        .password-container input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            padding-right: 40px;
+            margin-bottom: 0;
+        }
+
+        /* TOMBOL MATA */
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+            font-size: 1.1rem;
+            user-select: none;
+        }
+        /* [END] KODE BARU UNTUK IKON MATA */
+
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .create-account-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: block;
+            margin-top: -10px;
+        }
+
+        /* Gaya Checkbox (TIDAK DIOBOK-OBOk) */
+        .terms-checkbox {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .terms-checkbox label {
+            margin-left: 5px;
+            color: #555;
+            cursor: pointer;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        /* --- CSS ALERT (allert.css) (TIDAK DIOBOK-OBOk) --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 50px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        #alertMessage {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>BUAT AKUN BARU</h2>
+
+        <div class="role-selector" id="roleSelectorRegister">
+            <button class="role-button active" onclick="setActiveRole(this)">Admin</button>
+            <button class="role-button" onclick="setActiveRole(this)">User</button>
+            <button class="role-button" onclick="setActiveRole(this)">Customer Service</button>
+        </div>
+
+        <form class="register-form" onsubmit="return handleRegister(event)">
+            <input type="text" id="usernameInput" placeholder="Username" required>
+
+            <div class="password-container">
+                <input type="password" id="registerPasswordInput" placeholder="Buat Password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('registerPasswordInput', this)">
+                    <i class="fa-solid fa-eye-slash"></i>
+                </span>
+            </div>
+            <div id="nomorServerContainer">
+                <input type="text" id="nomorServerInput" placeholder="Nomor Server" required>
+            </div>
+
+            <div class="terms-checkbox">
+                <input type="checkbox" id="terms" name="terms">
+                <label for="terms">Saya Menyetujui Syarat & Ketentuan</label>
+            </div>
+
+            <button type="submit" class="login-button">DAFTAR</button>
+
+            <a href="login.html" class="create-account-link">Sudah punya akun? Masuk di sini</a>
+        </form>
+    </div>
+
+    <div id="customAlert" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAlert()">&times;</span>
+            <p id="alertMessage">Setujui syarat dan ketentuan!</p>
+        </div>
+    </div>
+
+    <script>
+        // --- Konstanta dan Elemen (TIDAK DIOBOK-OBOk) ---
+        const CORRECT_SERVER_NUMBERS = {
+            'Admin': '010109',
+            'Customer Service': '101008'
+        };
+
+        const serverContainer = document.getElementById('nomorServerContainer');
+        const serverInput = document.getElementById('nomorServerInput');
+        const usernameInput = document.getElementById('usernameInput');
+        const passwordInput = document.getElementById('registerPasswordInput');
+
+        // --- Fungsi Helper LocalStorage (TIDAK DIOBOK-OBOk) ---
+        function getRegisteredAccounts() {
+            const storedData = localStorage.getItem('registeredAccounts');
+            try {
+                return storedData ? JSON.parse(storedData) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveRegisteredAccounts(accounts) {
+            localStorage.setItem('registeredAccounts', JSON.stringify(accounts));
+        }
+        
+        // ----------------------------------------------------------------
+        /* [START] FUNGSI BARU UNTUK IKON MATA */
+        /**
+         * FUNGSI TOMBOL MATA (SHOW/HIDE PASSWORD)
+         * Mengubah tipe input dari 'password' menjadi 'text' dan sebaliknya.
+         */
+        function togglePasswordVisibility(inputId, buttonElement) {
+            const passwordInput = document.getElementById(inputId);
+            const iconElement = buttonElement.querySelector('i'); // Mengambil elemen <i> (ikon Font Awesome)
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                // Mengganti ikon ke mata terbuka (Show)
+                iconElement.classList.remove('fa-eye-slash');
+                iconElement.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                // Mengganti ikon ke mata dicoret (Hide)
+                iconElement.classList.remove('fa-eye');
+                iconElement.classList.add('fa-eye-slash');
+            }
+        }
+        /* [END] FUNGSI BARU UNTUK IKON MATA */
+
+
+        // --- Fungsi Interface (TIDAK DIOBOK-OBOk) ---
+        function showAlert(message) {
+            const alertBox = document.getElementById('customAlert');
+            const messageElement = document.getElementById('alertMessage');
+
+            messageElement.textContent = message;
+            if (message.includes("Berhasil")) {
+                 messageElement.style.color = '#28a745';
+            } else {
+                 messageElement.style.color = '#dc3545';
+            }
+
+            alertBox.style.display = 'block';
+        }
+
+        function closeAlert() {
+            document.getElementById('customAlert').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('customAlert');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+
+        // --- Fungsi Utama Form (TIDAK DIOBOK-OBOk) ---
+
+        /**
+         * Mengatur tombol aktif dan visibilitas input Nomor Server.
+         */
+        function setActiveRole(clickedButton) {
+            const roleSelector = document.getElementById('roleSelectorRegister');
+            const buttons = roleSelector.querySelectorAll('.role-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            clickedButton.classList.add('active');
+
+            const roleName = clickedButton.textContent.trim();
+
+            if (roleName === 'Admin' || roleName === 'Customer Service') {
+                serverContainer.style.display = 'block';
+                serverInput.required = true;
+            } else if (roleName === 'User') {
+                serverContainer.style.display = 'none';
+                serverInput.required = false;
+                serverInput.value = '';
+            }
+        }
+
+
+        /**
+         * Handler untuk proses Pendaftaran.
+         */
+        function handleRegister(event) {
+            event.preventDefault();
+
+            const termsCheckbox = document.getElementById('terms');
+            const activeRoleButton = document.querySelector('#roleSelectorRegister .role-button.active');
+            const roleName = activeRoleButton ? activeRoleButton.textContent.trim() : '';
+
+            const username = usernameInput.value.trim().toLowerCase();
+            const password = passwordInput.value;
+            const enteredServerNumber = serverInput.value.trim();
+
+            if (!termsCheckbox.checked) {
+                showAlert("Setujui syarat dan ketentuan!");
+                return false;
+            }
+
+            if (roleName === 'Admin' || roleName === 'Customer Service') {
+                const requiredNumber = CORRECT_SERVER_NUMBERS[roleName];
+
+                if (enteredServerNumber !== requiredNumber) {
+                    showAlert("Nomor Server salah!");
+                    return false;
+                }
+            }
+
+            const registeredAccounts = getRegisteredAccounts();
+            if (registeredAccounts[username]) {
+                showAlert("Username ini sudah terdaftar. Silakan gunakan Username lain.");
+                return false;
+            }
+
+            registeredAccounts[username] = {
+                password: password,
+                role: (roleName === 'Customer Service' ? 'CS' : roleName), 
+            };
+
+            saveRegisteredAccounts(registeredAccounts);
+
+            showAlert(`Pendaftaran Berhasil! Silakan masuk ke halaman Login dengan Username: ${username}`);
+
+            setTimeout(() => {
+                 window.location.href = 'login.html';
+            }, 2000);
+
+            return false;
+        }
+
+        // --- Inisialisasi Tampilan Awal (TIDAK DIOBOK-OBOk) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            setActiveRole(document.querySelector('#roleSelectorRegister .role-button.active'));
+        });
+    </script>
+</body>
+
+</html>

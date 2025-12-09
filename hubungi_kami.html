@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubungi Kami PD Parkir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Reset Dasar */
+        body, h1, h2, h3, p, ul, li, form, input, textarea, button {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f0f0f0; 
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* HEADER/NAVIGASI */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; 
+            background-color: #004d99; 
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+            margin-left: 20px;
+        }
+        
+        .logo-container img {
+            height: 35px;
+            margin-right: 5px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        nav ul li a.active,
+        nav ul li a:hover {
+            background-color: #0066cc; 
+            border-bottom: none; 
+        }
+
+        /* CONTAINER UTAMA (untuk konten 2 kolom) */
+        .contact-content-wrapper {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        /* KOLOM KIRI: Foto dan Peta */
+        .left-column {
+            flex: 1;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            font-size: 20px;
+            color: #004d99;
+            padding-left: 10px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        /* Garis vertikal biru kiri untuk judul kartu */
+        .card h3::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 100%;
+            width: 3px;
+            background-color: #004d99;
+        }
+
+        .photo-location img {
+            width: 100%;
+            height: auto;
+            border-radius: 3px;
+        }
+        
+        .map-location {
+            position: relative;
+            width: 100%;
+            height: 300px; 
+            overflow: hidden;
+            border-radius: 3px;
+        }
+        
+        .map-location iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+
+        /* KOLOM KANAN: Kontak dan Form */
+        .right-column {
+            flex: 1;
+        }
+
+        /* Kontak Detail */
+        .contact-detail-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .contact-detail-item i {
+            color: #004d99;
+            font-size: 18px;
+            width: 25px;
+            margin-top: 2px;
+        }
+
+        .contact-detail-item p {
+            margin-left: 10px;
+            font-size: 15px;
+            word-break: break-word; 
+        }
+
+        /* Feedback Form */
+        .feedback-form h3 {
+             font-size: 20px;
+             color: #004d99;
+             padding-left: 10px;
+             margin-bottom: 15px;
+             position: relative;
+        }
+
+        /* Garis vertikal biru kiri untuk judul form */
+        .feedback-form h3::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 100%;
+            width: 3px;
+            background-color: #004d99;
+        }
+
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-row input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 150px;
+            margin-bottom: 15px;
+        }
+
+        button[type="submit"] {
+            background-color: #004d99;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 3px;
+            float: right; 
+        }
+
+        /* Tambahan responsive */
+        @media (max-width: 768px) {
+            .contact-content-wrapper {
+                flex-direction: column;
+                margin: 20px;
+                padding: 0;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul {
+                width: 100%;
+                justify-content: space-around;
+                margin: 0;
+            }
+            nav ul li a {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="logo remove bg.png" alt="Logo PD">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="beranda.html">Home</a></li>
+                <li><a href="tentang_kami.html">Tentang Kami</a></li>
+                <li><a href="Layanan.html">Layanan</a></li>
+                <li><a href="berita.html">Berita</a></li>
+                <li><a href="hubungi_kami.html" class="active">Hubungi Kami</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="contact-content-wrapper">
+        
+        <div class="left-column">
+            
+            <div class="card photo-location">
+                <h3>Foto Lokasi</h3>
+                <img src="foto_kantor.jpeg" alt="Foto Kantor PD Parkir Makassar Raya">
+            </div>
+
+            <div class="card map-location-card">
+                 <p style="font-size: 12px; color: #004d99; margin-bottom: 5px;"><a href="#" style="text-decoration: none; color: #004d99;">Lihat peta lebih besar</a></p>
+                
+                <div class="map-location">
+                    <iframe 
+                        src="https://maps.google.com/maps?q=PD+Parkir+Makassar+Raya&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-column">
+            
+            <div class="card contact-detail">
+                <h3>Kontak Detail</h3>
+                
+                <div class="contact-detail-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Jl. Hati Mulia No.7, Mattoangin, Kec. Mariso, Kota Makassar, Sulawesi Selatan 90121</p>
+                </div>
+                
+                <div class="contact-detail-item">
+                    <i class="fas fa-phone"></i>
+                    <p>(0411) 873384</p>
+                </div>
+                
+                <div class="contact-detail-item">
+                    <i class="fas fa-envelope"></i>
+                    <p>pdparkir@makassarkota.go.ig</p>
+                </div>
+            </div>
+
+            <div class="card feedback-form">
+                <h3>Feedback Form</h3>
+                <form id="feedbackForm">
+                    <div class="form-row">
+                        <input type="text" id="firstName" placeholder="First Name" required>
+                        <input type="tel" id="phoneNumber" placeholder="Nomor Telepon" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="text" id="lastName" placeholder="Last Name" required>
+                        <input type="email" id="email" placeholder="E-mail" required>
+                    </div>
+                    <textarea id="message" placeholder="Your Message" required></textarea>
+                    
+                    <button type="submit">SUBMIT</button>
+                    <div style="clear: both;"></div> 
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY_PESAN = 'contactMessagesPDparkir';
+        const form = document.getElementById('feedbackForm');
+
+        // Fungsi untuk mengambil data pesan saat ini
+        function getMessages() {
+            const storedData = localStorage.getItem(STORAGE_KEY_PESAN);
+            return storedData ? JSON.parse(storedData) : [];
+        }
+
+        // Fungsi untuk menangani submit form
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Ambil nilai dari input form
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const phone = document.getElementById('phoneNumber').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            // Dapatkan data pesan yang sudah ada
+            let messages = getMessages();
+
+            // Buat ID baru (ID terbesar + 1, atau 1 jika kosong)
+            const newId = messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1;
+            
+            // --- PERBAIKAN PENTING DI BAWAH INI ---
+            
+            // 1. Gabungkan First Name dan Last Name menjadi properti 'name'
+            const fullName = `${firstName} ${lastName}`; 
+            
+            // 2. Gunakan Date.now() untuk properti 'timestamp'
+            const nowTimestamp = Date.now(); 
+
+            // Buat objek pesan baru dengan properti yang cocok dengan kode Admin
+            const newMessage = {
+                id: newId,
+                // Menggunakan 'name' untuk Pengirim
+                name: fullName, 
+                email: email,
+                phone: phone,
+                message: message,
+                // Menggunakan 'timestamp' numerik
+                timestamp: nowTimestamp, 
+                status: 'Belum Dibaca', // Status default
+                // Hapus properti 'firstName', 'lastName', dan 'date' yang lama
+            };
+
+            // Tambahkan pesan baru ke array
+            messages.push(newMessage);
+
+            // Simpan kembali array yang diperbarui ke LocalStorage
+            localStorage.setItem(STORAGE_KEY_PESAN, JSON.stringify(messages));
+
+            // Tampilkan pesan sukses dan reset form
+            alert('Pesan Anda berhasil dikirim! Kami akan segera merespons.');
+            form.reset();
+        });
+    </script>
+</body>
+</html>

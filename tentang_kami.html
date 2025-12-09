@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil dan Sejarah PD Parkir (Replika Gabungan)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset Dasar */
+        body, h1, h2, h3, p, ul, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f0f0f0; /* Warna latar belakang umum */
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* HEADER/NAVIGASI */
+       /* HEADER/NAVIGASI (Meniru bagian atas screenshot) */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Navigasi rata kanan */
+            background-color: #004d99; /* Biru gelap untuk navbar */
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-right: auto; /* Mendorong logo ke kiri */
+            margin-left: 20px;
+        }
+        
+        /* Placeholder untuk logo agar mirip tata letak aslinya */
+        .logo-container img {
+            height: 35px;
+            margin-right: 5px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a.active,
+        nav ul li a:hover {
+            background-color: #0066cc; /* Biru sedikit lebih terang untuk hover/aktif */
+        }
+
+        /* KONTEN UTAMA */
+        .container {
+            max-width: 1000px; /* Lebar konten utama */
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: white;
+        }
+
+        .profile, .visi, .misi {
+            padding-bottom: 20px;
+        }
+
+        .profile h2 {
+            font-size: 24px;
+            color: #004d99;
+            padding: 20px 0 10px 0;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 15px;
+        }
+
+        .profile p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Bagian Visi */
+        .visi h3 {
+            font-size: 20px;
+            color: #004d99;
+            padding-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .visi-box {
+            background-color: #f0f4f7; /* Latar belakang abu-abu muda untuk box VISI */
+            border-left: 5px solid #004d99; /* Garis biru di kiri */
+            padding: 25px;
+            margin-bottom: 20px;
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        /* Bagian Misi */
+        .misi h3 {
+            font-size: 20px;
+            color: #004d99;
+            padding-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .misi ul {
+            list-style: none;
+        }
+
+        .misi li {
+            position: relative;
+            padding-left: 15px;
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        /* Bullet custom biru */
+        .misi li::before {
+            content: "•";
+            color: #004d99;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        /* FOOTER/STRUKTUR ORGANISASI */
+        .org-structure-section {
+            background-color: #004d99; /* Biru gelap, sama seperti navbar */
+            padding: 20px 0 40px 0;
+            text-align: center;
+        }
+
+        .org-header-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .org-structure-section h2 {
+            color: white;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .org-image-container {
+            max-width: 90%;
+            margin: 0 auto;
+            background-color: white; /* Latar belakang putih untuk gambar */
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .org-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="logo remove bg.png" alt="Logo PD">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="beranda.html">Home</a></li>
+                <li><a href="tentang_kami.html" class="active">Tentang Kami</a>
+                </li> <li><a href="Layanan.html">Layanan</a></li>
+                <li><a href="berita.html">Berita</a></li>
+                <li><a href="hubungi_kami.html">Hubungi Kami</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="profile">
+            <h2>Profil dan Sejarah PD Parkir</h2>
+            <p>Perusahaan Daerah Parkir Makassar Raya Kota Makassar didirikan pada Tahun 1999 berdasarkan Peraturan Daerah Kotamadya Dati II Ujung Pandang No. 3 Tahun 1999 tentang Pendirian Perusahaan Daerah Parkir Makassar Raya Kotamadya Daerah Tingkat II Ujung Pandang (Lembaran Daerah Kotamadya Dati II Ujung Pandang No. 19 Tahun 1999 seri D, Nomor 6, kemudian diubah dengan Perda Kota Makassar No. 16 Tahun 2005.</p>
+            <p>Pendirian Perusahaan Daerah Parkir Makassar Raya Kota Makassar (PD Parkir Makassar Raya) didasari atas prinsip-prinsip efesiensi dan efektifitas pencapaian tujuan pelayanan dari sektor perparkiran kepada masyarakat Kota Makassar. Disamping itu kegiatan perparkiran pada hakekatnya juga merupakan sumber Pendapatan Daerah yang sangat potensial untuk menunjang Pendapatan Asli Daerah (PAD) Kota Makassar. Jadi dengan kehadiran Perusahaan Daerah Parkir Makassar Raya, selain diharapkan menunjang pelaksanaan otonomi daerah juga dapat meningkatkan PAD Kota Makassar.</p>
+            <p>PD Parkir Makassar Raya mulai melaksanakan kegiatan operasional setelah melalui pertimbangan, penilaian dan pengesahan dilapangan, maka berdasarkan SK Walikota Makassar No. 7040 Tahun 1999, Struktur Organisasi PD Parkir Makassar Raya terdiri atas Direksi yang membawahi 3 Kepala Bidang, 1 Kepala Bagian, dan 12 Kepala Seksi. Perusahaan daerah ini secara efektif mulai beroperasi pada tanggal 1 September 2005.</p>
+        </section>
+
+        <section class="visi">
+            <h3>VISI</h3>
+            <div class="visi-box">
+                <p>Menjadikan Perusahaan Daerah yang Mandiri dan Profesional dalam Memberikan Pelayanan Parkir Prima, Tertib, Aman, Nyaman Dan Terkendali Dalam Menunjang Pembangunan Kota Makassar</p>
+            </div>
+        </section>
+
+        <section class="misi">
+            <h3>Misi PD Parkir</h3>
+            <ul>
+                <li>Mengedepankan Profesionalisme dalam Meningkatkan Kualitas Layanan kepada Masyarakat Umum dibidang Perparkiran.</li>
+                <li>Membentuk Sistem Manajemen Perparkiran Modern yang mampu Tepatguna dalam Mengoptimalkan Pendapatan Jasa Parkir Guna Untuk Menunjang Peningkatan Pendapatan Asli Daerah Kota Makassar.</li>
+                <li>Membentuk Sumber Daya Manusia (SDM) Perparkiran yang Berkualitas dan Profesional.</li>
+                <li>Memanfaatkan dan Mengembangkan Fungsi Satuan Ruang Parkir (SRP) Tepi Jalan Sepanjang Tidak Mengganggu Ketertiban Lalu Lintas.</li>
+                <li>Membangun Sinergitas dengan Instansi terkait lainnya dalam Meningkatkan Pendapatan, Pengawasan, Penilaian dan Penertiban Perparkiran.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="org-structure-section">
+        <div class="org-header-wrapper">
+            <h2>Struktur Organisasi PD Parkir</h2>
+        </div>
+        <div class="org-image-container">
+            <img src="struktur_organisasi.png" alt="Struktur Organisasi PD Parkir" class="org-image">
+        </div>
+    </footer>
+</body>
+</html>

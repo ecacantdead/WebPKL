@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pd parkir - makassar kota metaverse</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+/* reset dasar */
+body, h1, p, ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: arial, sans-serif; 
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* --- hero section (latar belakang penuh layar) --- */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh; 
+    overflow: hidden;
+    
+    background-image: url('beranda.jpg'); 
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover; 
+}
+
+/* overlay untuk kegelapan gambar */
+.hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55); 
+    z-index: 1; 
+}
+
+/* --- top bar (baris info paling atas biru) --- */
+.top-bar {
+    background-color: #00427A; 
+    color: white;
+    font-size: 13px;
+    padding: 5px 20px; 
+    position: fixed; 
+    width: 100%;
+    top: 0; 
+    left: 0;
+    z-index: 102;
+}
+
+.top-info {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+}
+
+/* container untuk alamat, jam, dan telepon */
+.info-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.top-info span {
+    display: flex;
+    align-items: center;
+}
+.top-info span i {
+    margin-right: 5px;
+}
+
+.top-bar .back-button {
+    font-size: 1.5em;
+    color: white;
+    display: block; 
+    margin-right: 20px;
+}
+
+.logout-button {
+    background: transparent;
+    color: rgb(252, 252, 252);
+    font-size: 1em;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    display: block; 
+    margin-left: 20px;
+}
+
+
+/* --- main navigation (logo dan link menu) --- */
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent; 
+    padding: 10px 50px 10px 20px; 
+    position: absolute;
+    /* KOREKSI: Mengatur top menjadi 35px agar lebih rapat dengan top-bar (yang tingginya sekitar 30-40px) */
+    top: 32px; 
+    left: 0;
+    right: 0;
+    z-index: 100;
+    overflow: hidden; 
+}
+
+/* Objek segi empat panjang transparan putih */
+.nav-background-bar {
+    position: absolute;
+    /* Mengatur agar bilah transparan membentang dari tepi kiri (0) */
+    left: 0; 
+    right: 0; 
+    top:  0;
+    height: 100%; 
+    background-color: rgba(255, 255, 255, 0.35); /* Putih transparan */
+    z-index: -1; 
+    /* Mengimbangi padding kiri pada .main-nav agar bilah transparan terlihat penuh dari tepi */
+    margin-left: -20px; 
+}
+
+/* logo kecil proporsional */
+.logo-area {
+    margin-right: auto; 
+    display: flex;
+    align-items: center;
+    z-index: 2; 
+    position: relative; 
+}
+
+.logo-area img {
+    width: 150px; 
+    height: auto; 
+}
+
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+    font-size: 1.1em;
+    align-items: center; 
+    z-index: 2; 
+    margin-right: 50px; 
+}
+
+.nav-links a {
+    color: white; 
+    font-weight: 600; 
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); 
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent; 
+}
+
+.nav-links a:hover {
+    border-bottom: 2px solid white;
+}
+
+/* --- hero content (teks utama) --- */
+.hero-content {
+    position: absolute;
+    top: 50%; 
+    left: 5%; 
+    transform: translatey(-50%); 
+    color: white;
+    text-align: left;
+    z-index: 2; 
+}
+
+.hero-content h1 {
+    font-size: 5.5em; 
+    margin-bottom: 10px;
+    font-weight: 800; 
+    letter-spacing: 2px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
+}
+
+.hero-content p {
+    font-size: 1.8em; 
+    margin: 5px 0;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* penyesuaian untuk tampilan mobile/layar kecil */
+@media (max-width: 1024px) {
+    .top-info {
+        flex-wrap: wrap; 
+        justify-content: center;
+        gap: 10px;
+    }
+    .back-button {
+        position: static;
+        margin-right: 15px;
+    }
+    .logout-button {
+        margin-left: 0;
+    }
+
+    .main-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+        top: 50px;
+    }
+
+    /* Sembunyikan bar transparan di mobile */
+    .nav-background-bar {
+        display: none;
+    }
+
+    .nav-links {
+        display: none; 
+    }
+
+    .hero-content {
+        padding-top: 50px;
+    }
+
+    .hero-content h1 {
+        font-size: 3em;
+    }
+
+    .hero-content p {
+        font-size: 1.2em;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="top-info">
+            <a href="login.html" class="back-button"><i class="fas fa-arrow-left"></i></a>
+            
+            <div class="info-container">
+                <span><i class="fas fa-map-marker-alt"></i>Jl. Hati Mulia No.7, Makassar</span>
+                <span><i class="fas fa-clock"></i>Senin - Jum'at 08.00 - 16.00. Sabtu & Minggu Tutup</span>
+                <span><i class="fas fa-phone"></i>(0411) 873384</span>
+            </div>
+            
+            <button class="logout-button" title="Logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="nav-background-bar"></div>
+
+        <div class="logo-area">
+            <img src="logo remove bg.png" alt="Logo PD Parkir"> 
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="beranda_admin.html">Home</a></li>
+            <li><a href="kelola_berita&layanan.html">Kelola Berita & Kegiatan</a></li>
+            <li><a href="Kelola_Layanan.html">Kelola Layanan</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>SELAMAT DATANG</h1>
+            <p>Di Situs PD PARKIR</p>
+            <p>Meningkatkan Pelayanan</p>
+            <p>Menuju Makassar Kota Metaverse!</p>
+        </div>
+    </div>
+
+</body>
+</html>

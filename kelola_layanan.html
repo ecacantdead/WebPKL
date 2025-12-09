@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Layanan (Admin)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================= */
+        /* === STYLING DASAR DAN NAVIGASI ADMIN === */
+        /* ======================================= */
+        
+        body, h1, h2, h3, p, ul, li, table, input, button, textarea {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0; 
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header/Navbar */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; 
+            background-color: #004d99; /* Biru gelap */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-container img {
+            height: 35px;
+            margin-right: 5px;
+        }
+        
+        .nav-right-group {
+            display: flex; 
+            align-items: center;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        nav ul li a:hover {
+            background-color: #0066cc; 
+        }
+        
+        /* Styling untuk menu 'Kelola Layanan' yang aktif */
+        nav ul li:nth-child(3) a { 
+            background-color: #0066cc; 
+            color: white; 
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-admin {
+            position: relative;
+            height: 200px; 
+            overflow: hidden;
+            color: white;
+            padding: 40px 0 0 50px;
+        }
+        
+        .hero-admin::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Ganti dengan nama file gambar latar belakang yang Anda gunakan (contoh: admin.png) */
+            background-image: url('admin.png'); 
+            background-size: cover;
+            background-position: center;
+            filter: blur(3px); 
+            z-index: 1;
+        }
+        
+        .hero-admin::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 77, 153, 0.7); /* Biru tua semi-transparan */
+            z-index: 2;
+        }
+
+        .hero-admin h1 {
+            position: relative;
+            font-size: 36px;
+            font-weight: 700;
+            z-index: 3;
+            text-transform: uppercase;
+        }
+
+        /* --- CONTAINER UTAMA --- */
+        .main-container {
+            max-width: 1000px;
+            /* PENTING: Margin negatif diubah menjadi -150px agar kartu lebih naik ke Hero Section */
+            margin: -150px auto 30px auto; 
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* ======================================= */
+        /* === KARTU RINGKASAN (SUMMARY CARDS) === */
+        /* ======================================= */
+        .summary-row {
+            display: flex;
+            justify-content: flex-end; /* Mengatur kartu rata kanan */
+            gap: 15px; 
+            margin-bottom: 30px;
+            width: 100%; 
+        }
+        
+        .summary-card {
+            /* Latar belakang semi-transparan agar terlihat di atas background */
+            background-color: rgba(255, 255, 255, 0.9); 
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+            width: 150px; 
+            /* PENTING: Tinggi Kartu diubah menjadi 110px agar lebih panjang */
+            height: 110px; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            /* Tambahkan styling untuk interaksi klik */
+            cursor: pointer; 
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .summary-card .number {
+            font-size: 32px; /* Disesuaikan sedikit agar lebih menonjol di kartu yang lebih besar */
+            font-weight: 700;
+            color: #004d99; 
+            margin-bottom: 5px;
+        }
+        
+        .summary-card .label {
+            font-size: 12px; /* Disesuaikan sedikit agar lebih jelas */
+            color: #555;
+            text-transform: uppercase;
+        }
+
+        /* ======================================= */
+        /* === DAFTAR LAYANAN (TABEL & FORM) === */
+        /* ======================================= */
+        
+        .list-card, .form-card {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-card h2, .form-card h2 {
+            font-size: 22px;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .layanan-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .layanan-table thead th {
+            background-color: #004d99; /* Biru gelap */
+            color: white;
+            text-align: left;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .layanan-table tbody td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top; 
+            font-size: 14px;
+        }
+        
+        .layanan-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Aksi Button Container */
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            width: 120px; /* Lebar diperluas agar tombol 'Edit' dan 'Hapus' muat */
+        }
+        
+        .action-buttons button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            flex-grow: 1;
+        }
+        
+        .btn-edit {
+            background-color: #28a745; /* Hijau */
+            color: white;
+        }
+        
+        .btn-delete {
+            background-color: #dc3545; /* Merah */
+            color: white;
+        }
+        
+        /* FORM TAMBAH / EDIT */
+        
+        .form-row-input {
+            margin-bottom: 15px;
+        }
+        
+        .form-row-input label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-row-input input, .form-row-input textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+            resize: vertical;
+        }
+        
+        .form-buttons {
+            text-align: left; 
+            margin-top: 20px;
+        }
+        
+        .btn-simpan, .btn-simpan-edit {
+            background-color: #007bff; /* Biru */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .btn-simpan-edit {
+             background-color: #28a745; /* Hijau untuk membedakan mode edit */
+        }
+        
+        .btn-batal {
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="logo remove bg.png" alt="Logo PD"> 
+        </div>
+        
+        <div class="nav-right-group">
+            <nav>
+                <ul>
+                    <li><a href="beranda_admin.html">Home</a></li>
+                    <li><a href="kelola_berita&layanan.html">Kelola Berita & Kegiatan</a></li>
+                    <li><a href="Kelola_Layanan.html">Kelola Layanan</a></li> 
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-admin">
+        <h1 style="z-index: 3;">KELOLA LAYANAN</h1>
+    </section>
+
+    <div class="main-container">
+        
+        <div class="summary-row">
+            <div class="summary-card" id="cardLayanan" onclick="editSummary('layanan')">
+                <div class="number" id="totalLayanan">0</div>
+                <div class="label">Total Layanan Aktif</div>
+            </div>
+            <div class="summary-card" id="cardJukir" onclick="editSummary('jukir')">
+                <div class="number" id="totalJukir">0</div>
+                <div class="label">Total Jukir Yang Aktif</div>
+            </div>
+            <div class="summary-card" id="cardKolektor" onclick="editSummary('kolektor')">
+                <div class="number" id="totalKolektor">0</div>
+                <div class="label">Total Kolektor Yang Aktif</div>
+            </div>
+        </div>
+        
+        <div class="list-card">
+            <h2>Daftar Layanan</h2>
+            <table class="layanan-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Produk/Layanan</th>
+                        <th>Deskripsi</th>
+                        <th style="width: 120px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="layananTableBody">
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="form-card">
+            <h2 id="formTitle">Tambah Layanan Baru</h2>
+            <form id="layananForm">
+                <input type="hidden" id="inputId" value="">
+                
+                <div class="form-row-input">
+                    <label for="inputNama">Nama</label>
+                    <input type="text" id="inputNama" placeholder="Contoh: Pengelolaan Parkir Tepi Jalan Umum" required>
+                </div>
+                <div class="form-row-input">
+                    <label for="inputDeskripsi">Deskripsi</label>
+                    <textarea id="inputDeskripsi" placeholder="Deskripsi singkat layanan..." rows="3" required></textarea>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn-simpan" id="btnAddEdit">Tambah</button>
+                    <button type="button" class="btn-batal" onclick="resetForm()">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // --- KONFIGURASI DAN DATA ---
+        const STORAGE_KEY_LAYANAN = 'layananDataPerumdaParkir'; 
+        const STORAGE_KEY_SUMMARY = 'summaryDataPerumdaParkir'; // Kunci baru untuk data ringkasan
+
+        // Data Layanan Awal
+        let initialLayananData = [
+            { id: 1, nama: "Pengelolaan Parkir Tepi Jalan Umum", deskripsi: "Layanan pengelolaan parkir di tepi jalan umum yang tersebar di wilayah kota." },
+            { id: 2, nama: "Manajemen Pengelolaan Perparkiran Kota", deskripsi: "Perubahan bentuk manajemen modern untuk mengelola perparkiran di seluruh Kota Makassar." },
+            { id: 3, nama: "Sistem Terminal Parkir Elektronik (TPE)", deskripsi: "Sistem pembayaran parkir nontunai menggunakan kartu khusus untuk meminimalkan pungutan liar dan meningkatkan transparansi." },
+        ];
+        
+        // Data Ringkasan Awal (Jukir dan Kolektor)
+        let initialSummaryData = {
+            jukir: 854,
+            kolektor: 67
+        };
+        
+        // --- VARIABEL GLOBAL & REFERENSI DOM ---
+        const tableBody = document.getElementById('layananTableBody');
+        const form = document.getElementById('layananForm');
+        const formTitle = document.getElementById('formTitle');
+        const inputId = document.getElementById('inputId');
+        const inputNama = document.getElementById('inputNama');
+        const inputDeskripsi = document.getElementById('inputDeskripsi');
+        const btnAddEdit = document.getElementById('btnAddEdit');
+        const totalLayananDisplay = document.getElementById('totalLayanan');
+        const totalJukirDisplay = document.getElementById('totalJukir');
+        const totalKolektorDisplay = document.getElementById('totalKolektor');
+
+        let layananData = getLayananData(); 
+        let summaryData = getSummaryData();
+        
+        // --- FUNGSI LOCALSTORAGE & HELPER ---
+
+        function getLayananData() {
+            const storedData = localStorage.getItem(STORAGE_KEY_LAYANAN);
+            if (storedData) {
+                try {
+                    return JSON.parse(storedData);
+                } catch (e) {
+                    console.error("Gagal mem-parsing data Layanan dari localStorage", e);
+                    return initialLayananData;
+                }
+            }
+            // Simpan data awal jika belum ada
+            saveLayananData(initialLayananData);
+            return initialLayananData; 
+        }
+
+        function saveLayananData(data) {
+            localStorage.setItem(STORAGE_KEY_LAYANAN, JSON.stringify(data));
+        }
+        
+        function getSummaryData() {
+            const storedData = localStorage.getItem(STORAGE_KEY_SUMMARY);
+            if (storedData) {
+                try {
+                    return JSON.parse(storedData);
+                } catch (e) {
+                    console.error("Gagal mem-parsing data Summary dari localStorage", e);
+                    return initialSummaryData;
+                }
+            }
+            // Simpan data awal jika belum ada
+            saveSummaryData(initialSummaryData);
+            return initialSummaryData; 
+        }
+
+        function saveSummaryData(data) {
+            localStorage.setItem(STORAGE_KEY_SUMMARY, JSON.stringify(data));
+        }
+
+        // --- FUNGSI UTAMA ---
+
+        function renderSummaryCards() {
+            // Layanan diambil dari panjang array layananData (sudah dihitung di renderTable)
+            totalLayananDisplay.textContent = layananData.length; 
+            
+            // Jukir dan Kolektor diambil dari summaryData
+            totalJukirDisplay.textContent = summaryData.jukir;
+            totalKolektorDisplay.textContent = summaryData.kolektor;
+        }
+
+        function renderTable() {
+            tableBody.innerHTML = '';
+            
+            // Sortir data berdasarkan ID secara menaik (ascending)
+            const sortedData = layananData.sort((a, b) => a.id - b.id);
+
+            sortedData.forEach(item => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${item.nama}</td>
+                    <td>${item.deskripsi}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="editItem(${item.id})">Edit</button>
+                            <button class="btn-delete" onclick="deleteItem(${item.id})">Hapus</button>
+                        </div>
+                    </td>
+                `;
+            });
+            
+            // Update summary card Total Layanan Aktif
+            renderSummaryCards();
+        }
+        
+        // --- FUNGSI BARU UNTUK EDIT SUMMARY CARD ---
+        function editSummary(key) {
+            let label = '';
+            let currentValue = 0;
+
+            if (key === 'layanan') {
+                label = 'Total Layanan Aktif';
+                currentValue = layananData.length;
+                alert('Jumlah Layanan Aktif dihitung otomatis dari "Daftar Layanan". Silakan tambahkan/hapus item di bawah untuk mengubah total.');
+                return;
+            } else if (key === 'jukir') {
+                label = 'Total Jukir Yang Aktif';
+                currentValue = summaryData.jukir;
+            } else if (key === 'kolektor') {
+                label = 'Total Kolektor Yang Aktif';
+                currentValue = summaryData.kolektor;
+            } else {
+                return; 
+            }
+
+            const newValueStr = prompt(`Masukkan nilai baru untuk "${label}":`, currentValue);
+            
+            if (newValueStr !== null) {
+                const newValue = parseInt(newValueStr.trim());
+                
+                if (!isNaN(newValue) && newValue >= 0) {
+                    // Update data
+                    summaryData[key] = newValue;
+                    saveSummaryData(summaryData);
+                    
+                    // Update tampilan
+                    renderSummaryCards();
+                    alert(`${label} berhasil diperbarui menjadi ${newValue}.`);
+                } else {
+                    alert('Input tidak valid. Harap masukkan angka bulat positif.');
+                }
+            }
+        }
+        // END FUNGSI BARU
+
+        function resetForm() {
+            form.reset();
+            inputId.value = '';
+            formTitle.textContent = 'Tambah Layanan Baru';
+            btnAddEdit.textContent = 'Tambah';
+            btnAddEdit.classList.remove('btn-simpan-edit');
+            btnAddEdit.classList.add('btn-simpan');
+            // Scroll ke atas tabel setelah reset
+            document.querySelector('.list-card').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const nama = inputNama.value.trim();
+            const deskripsi = inputDeskripsi.value.trim();
+            const idToEdit = inputId.value;
+
+            if (!nama || !deskripsi) {
+                alert("Nama dan Deskripsi layanan harus diisi.");
+                return;
+            }
+
+            if (idToEdit) {
+                // LOGIKA SIMPAN EDIT
+                const id = parseInt(idToEdit);
+                const index = layananData.findIndex(item => item.id === id);
+                if (index !== -1) {
+                    layananData[index].nama = nama;
+                    layananData[index].deskripsi = deskripsi;
+                    alert(`Layanan ID ${id} berhasil diperbarui!`);
+                }
+            } else {
+                // LOGIKA TAMBAH BARU
+                // Cari ID terbesar yang ada, lalu tambah 1
+                const newId = layananData.length > 0 ? Math.max(...layananData.map(n => n.id)) + 1 : 1;
+                const newItem = {
+                    id: newId,
+                    nama: nama,
+                    deskripsi: deskripsi
+                };
+                layananData.push(newItem);
+                alert('Layanan baru berhasil ditambahkan!');
+            }
+
+            saveLayananData(layananData); 
+            resetForm();
+            renderTable(); // renderTable juga memanggil renderSummaryCards
+        }
+        
+        function editItem(id) {
+            const itemToEdit = layananData.find(item => item.id === id);
+
+            if (itemToEdit) {
+                inputId.value = id;
+                inputNama.value = itemToEdit.nama;
+                inputDeskripsi.value = itemToEdit.deskripsi;
+
+                formTitle.textContent = `Edit Layanan ID: ${id}`;
+                btnAddEdit.textContent = 'Simpan Perubahan';
+                btnAddEdit.classList.remove('btn-simpan');
+                btnAddEdit.classList.add('btn-simpan-edit'); 
+
+                // Scroll ke form edit
+                form.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function deleteItem(id) {
+            const itemToDelete = layananData.find(item => item.id === id);
+            if (confirm(`Anda yakin ingin menghapus layanan: ${itemToDelete?.nama}?`)) {
+                // Filter array untuk menghapus item berdasarkan ID
+                layananData = layananData.filter(item => item.id !== id);
+                
+                alert('Layanan berhasil dihapus!');
+                saveLayananData(layananData); 
+                resetForm();
+                renderTable(); // renderTable juga memanggil renderSummaryCards
+            }
+        }
+        
+        // PENTING: Fungsi harus diakses secara global agar bisa dipanggil dari HTML onclick
+        window.editItem = editItem;
+        window.deleteItem = deleteItem;
+        window.resetForm = resetForm;
+        window.editSummary = editSummary; // Daftarkan fungsi baru
+
+        // Inisialisasi saat DOM dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hubungkan submit form
+            form.addEventListener('submit', handleFormSubmit);
+            
+            // Render tabel dan summary cards pertama kali
+            renderTable();
+            renderSummaryCards();
+        });
+
+    </script>
+</body>
+</html>

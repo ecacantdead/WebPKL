@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kelola Berita & Kegiatan (Admin)</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+   
+
+    <style>
+
+        /* Reset Dasar */
+
+        body, h1, h2, h3, p, ul, li, table, input, button {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        body {
+
+            font-family: 'Roboto', Arial, sans-serif;
+
+            background-color: #f0f0f0;
+
+            color: #333;
+
+            line-height: 1.6;
+
+        }
+
+
+
+        /* --- HEADER/NAVIGASI ADMIN PERBAIKAN --- */
+
+        .navbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background-color: #004d99; /* Biru gelap */
+
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+            padding: 0 20px;
+
+        }
+
+
+
+        .logo-container {
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+       
+
+        .logo-container img {
+
+            height: 35px;
+
+            margin-right: 5px;
+
+        }
+
+       
+
+        .nav-right-group {
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+       
+
+        /* Grup Kanan: Navigasi dan Ikon User */
+
+        .nav-right-group {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px; /* Jarak antara navigasi menu dan ikon user */
+
+        }
+
+
+
+        nav ul {
+
+            list-style: none;
+
+            display: flex;
+
+        }
+
+
+
+        nav ul li a {
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 15px 20px;
+
+            display: block;
+
+            font-weight: 500;
+
+            font-size: 14px;
+
+        }
+
+
+
+        nav ul li a.active,
+
+        nav ul li a:hover {
+
+            background-color: #0066cc; /* Biru sedikit lebih terang untuk hover/aktif */
+
+        }
+
+       
+
+        /* Styling untuk menu 'Kelola Berita & Kegiatan' yang aktif */
+
+        nav ul li:nth-child(2) a {
+
+            background-color: #0066cc;
+
+            color: white;
+
+           
+
+        }
+
+
+
+        .user-icons {
+
+             display: flex;
+
+             align-items: center;
+
+        }
+
+
+
+
+
+        /* --- HERO SECTION --- */
+
+        .hero-admin {
+
+            position: relative;
+
+            height: 200px;
+
+            overflow: hidden;
+
+            color: white;
+
+            padding: 40px 0 0 50px;
+
+        }
+
+       
+
+        .hero-admin::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background-image: url('admin.png');
+
+            background-size: cover;
+
+            background-position: center;
+
+            filter: blur(3px);
+
+            z-index: 1;
+
+        }
+
+       
+
+        .hero-admin::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background-color: rgba(0, 0, 0, 0.5);
+
+            z-index: 2;
+
+        }
+
+
+
+        .hero-admin h1 {
+
+            position: relative;
+
+            font-size: 36px;
+
+            font-weight: 700;
+
+            z-index: 3;
+
+            text-transform: uppercase;
+
+        }
+
+
+
+        /* --- CONTAINER UTAMA --- */
+
+        .main-container {
+
+            max-width: 1000px;
+
+            margin: -50px auto 30px auto;
+
+            padding: 0 20px;
+
+            position: relative;
+
+            z-index: 10;
+
+        }
+
+
+
+        /* DAFTAR BERITA (TABEL) */
+
+        .news-list-card, .form-card {
+
+            background-color: white;
+
+            padding: 20px;
+
+            margin-bottom: 30px;
+
+            border-radius: 5px;
+
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+
+        }
+
+
+
+        .news-list-card h2 {
+
+            font-size: 22px;
+
+            color: #444;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        .news-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+        }
+
+
+
+        .news-table thead th {
+
+            background-color: #f8f8f8;
+
+            color: #333;
+
+            text-align: left;
+
+            padding: 12px;
+
+            font-size: 14px;
+
+            border-bottom: 2px solid #ddd;
+
+        }
+
+
+
+        .news-table tbody td {
+
+            padding: 12px;
+
+            border-bottom: 1px solid #eee;
+
+            vertical-align: middle;
+
+            font-size: 14px;
+
+        }
+
+       
+
+        .news-table tbody tr:last-child td {
+
+            border-bottom: none;
+
+        }
+
+       
+
+        /* Aksi Button Container */
+
+        .action-buttons {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+
+            width: 70px;
+
+        }
+
+       
+
+        .action-buttons button {
+
+            padding: 6px 10px;
+
+            border: none;
+
+            border-radius: 3px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            text-transform: uppercase;
+
+        }
+
+       
+
+        .btn-edit {
+
+            background-color: #f0f0f0;
+
+            color: #555;
+
+            border: 1px solid #ccc;
+
+        }
+
+       
+
+        .btn-delete {
+
+            background-color: #004d99;
+
+            color: white;
+
+        }
+
+       
+
+        /* Kustomisasi button Simpan Perubahan saat mode Edit */
+
+        .btn-tambah[data-mode="edit"] {
+
+             background-color: #ffc107; /* Kuning/Orange */
+
+             color: #333;
+
+        }
+
+
+
+
+
+        /* BARIS PEMISAH KHUSUS */
+
+        .separator-row td {
+
+            border-bottom: 3px solid #ddd !important;
+
+            padding: 0 !important;
+
+            height: 10px;
+
+        }
+
+       
+
+        /* FORM TAMBAH / EDIT */
+
+        .form-card h2 {
+
+            font-size: 22px;
+
+            color: #444;
+
+            margin-bottom: 20px;
+
+        }
+
+       
+
+        .form-row-input {
+
+            margin-bottom: 15px;
+
+            display: flex;
+
+            gap: 10px;
+
+        }
+
+       
+
+        .form-row-input input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 3px;
+
+            font-size: 14px;
+
+        }
+
+       
+
+        .form-buttons {
+
+            text-align: right;
+
+            margin-top: 15px;
+
+        }
+
+       
+
+        /* Kustomisasi untuk tombol Simpan Perubahan */
+
+        .btn-tambah, .btn-tambah.btn-simpan {
+
+            background-color: #28a745;
+
+            color: white;
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 3px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            margin-right: 10px;
+
+        }
+
+
+
+        .btn-batal {
+
+            background-color: #f0f0f0;
+
+            color: #333;
+
+            padding: 10px 20px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 3px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo-container">
+
+            <img src="logo remove bg.png" alt="Logo PD">
+
+        </div>
+
+       
+
+        <div class="nav-right-group">
+
+            <nav>
+
+                <ul>
+
+                    <li><a href="beranda_admin.html">Home</a></li>
+
+                    <li><a href="kelola_berita&kegiatan.html">Kelola Berita & Kegiatan</a></li>
+
+                    <li><a href="Kelola_Layanan.html">Kelola Layanan</a></li>
+
+                </ul>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <section class="hero-admin">
+
+        <h1 style="z-index: 3;">KELOLA BERITA & KEGIATAN</h1>
+
+    </section>
+
+
+
+    <div class="main-container">
+
+       
+
+        <div class="news-list-card">
+
+            <h2>Daftar Berita & Kegiatan</h2>
+
+            <table class="news-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th style="width: 50px;">ID</th>
+
+                        <th>Judul Berita/Kegiatan</th>
+
+                        <th style="width: 150px;">Tanggal Publikasi</th>
+
+                        <th style="width: 100px;">Aksi</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="newsTableBody">
+
+                    </tbody>
+
+            </table>
+
+        </div>
+
+
+
+        <div class="form-card form-tambah">
+
+            <h2>Tambah Item Baru</h2>
+
+           
+
+            <form id="newsForm">
+    <div class="form-row-input">
+        <input type="text" id="inputJudul" placeholder="Judul" required>
+    </div>
+    <div class="form-row-input">
+        <input type="date" id="inputTanggal" placeholder="Tanggal Publikasi" required>
+    </div>
+    <div class="form-row-input">
+        <input type="url" id="inputLink" placeholder="Link Berita Lengkap (Contoh: https://www.website.com/berita-terbaru)" required>
+    </div>
+    <div class="form-buttons">
+        <button type="button" class="btn-tambah" id="btnAddEdit">Tambah</button>
+        <button type="button" class="btn-batal" onclick="resetForm()">Batal</button>
+    </div>
+</form>
+
+        </div>
+
+    </div>
+
+   
+
+    <script>
+    // --- KONFIGURASI DAN DATA ---
+    const STORAGE_KEY = 'newsDataAdmin'; // Kunci penyimpanan
+    
+    // Data Awal: DITAMBAHKAN KOLOM 'link'
+    let initialNewsData = [
+        { id: 1, judul: "TRC perumda parkir melakukan Penataan dan penertiban parkir Investmen Forum (MIF).", tanggal: "2022-11-17", link: "https://example.com/berita1" },
+        { id: 2, judul: "TRC perumda parkir Makassar Raya Tata Kendaraan Parkir Peserta MUSRA", tanggal: "2023-01-03", link: "https://example.com/berita2" },
+        { id: 3, judul: "Personil Perumda Parkir Dalam Giat HUT Kota Makassar Ke 415 Tahun", tanggal: "2022-11-17", link: "https://example.com/berita3" },
+        { id: 4, judul: "Ibu Direktur Utama Yulianti Tomu Mengunjungi Petugas Pos Jasa Parkir Komersial.", tanggal: "2022-11-17", link: "https://example.com/berita4" },
+        { id: 5, judul: "Ibu Direktur Utama Yulianti Tomu Mengikuti Kegiatan Rakernis Apeksi dan Makassar Investmen Forum (MIF)n", tanggal: "2022-11-17", link: "https://example.com/berita5" },
+        { id: 6, judul: "Direksi Perumda Parkir Makassar Raya Menghadiri Rapat Koordinasi di Ruang Sipakatua Kantor Balaikota Makassar", tanggal: "2022-11-17", link: "https://example.com/berita6" },
+        { id: 7, judul: "ibu Direktur Utama Yulianti Tomu, Memimpin Apel Pagi di Halaman Kantor Perumda Parkir Makassar Raya", tanggal: "2022-11-17", link: "https://example.com/berita7" }
+    ];
+
+    // --- VARIABEL GLOBAL & REFERENSI DOM ---
+    let newsData = getNewsData(); 
+    let currentEditId = null; 
+
+    const tableBody = document.getElementById('newsTableBody');
+    const inputJudul = document.getElementById('inputJudul');
+    const inputTanggal = document.getElementById('inputTanggal');
+    const inputLink = document.getElementById('inputLink'); // REFERENSI INPUT BARU
+    const btnAddEdit = document.getElementById('btnAddEdit');
+    const formTitle = document.querySelector('.form-tambah h2');
+    const form = document.getElementById('newsForm');
+
+
+    // --- FUNGSI LOCALSTORAGE & HELPER ---
+
+    function getNewsData() {
+        const storedData = localStorage.getItem(STORAGE_KEY);
+        if (storedData) {
+            try {
+                // Menggabungkan data dari localStorage dengan data awal 
+                // jika ada item baru di data awal yang belum ada di localStorage.
+                let parsedData = JSON.parse(storedData);
+                
+                // Jika data awal memiliki format Link dan data lama belum, 
+                // kita harus memastikan properti 'link' ada.
+                parsedData.forEach(item => {
+                    if (!item.link) item.link = '#'; 
+                });
+                return parsedData;
+            } catch (e) {
+                console.error("Gagal mem-parsing data dari localStorage", e);
+                return initialNewsData;
+            }
+        }
+        return initialNewsData; 
+    }
+
+    function saveNewsData(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+    
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        // Perlu trik replace(/-/g, '/') agar kompatibel dengan IE/Safari lama
+        const date = new Date(dateString.replace(/-/g, '/')); 
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('id-ID', options);
+    }
+
+    // --- FUNGSI UTAMA ---
+
+    function renderTable() {
+        tableBody.innerHTML = '';
+
+        const sortedData = newsData.sort((a, b) => a.id - b.id);
+        const maxId = sortedData.length > 0 ? sortedData[sortedData.length - 1].id : 0;
+        
+        sortedData.forEach(item => {
+            const row = tableBody.insertRow();
+            // Tampilkan Judul, Tanggal, dan Link di kolom Judul
+            row.innerHTML = `
+                <td>${item.id}</td>
+                <td>
+                    <strong>${item.judul}</strong>
+                    <br><small style="color: #0066cc;">Link: <a href="${item.link}" target="_blank" style="text-decoration: none; color: #0066cc;">${item.link.substring(0, 50)}...</a></small>
+                </td>
+                <td>${formatDate(item.tanggal)}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn-edit" onclick="editItem(${item.id})">Edit</button>
+                        <button class="btn-delete" onclick="deleteItem(${item.id})">Hapus</button>
+                    </div>
+                </td>
+            `;
+            // Tambahkan baris pemisah
+            if (item.id !== maxId) {
+                const separatorRow = tableBody.insertRow();
+                separatorRow.className = 'separator-row';
+                separatorRow.innerHTML = '<td colspan="4"></td>';
+            }
+        });
+    }
+
+    function resetForm() {
+        currentEditId = null;
+        form.reset();
+        btnAddEdit.textContent = 'Tambah';
+        btnAddEdit.className = 'btn-tambah';
+        formTitle.textContent = 'Tambah Item Baru';
+        // Hapus class simpan
+        btnAddEdit.classList.remove('btn-simpan'); 
+    }
+
+    function handleFormSubmit() {
+        const judul = inputJudul.value.trim();
+        const link = inputLink.value.trim(); // Ambil nilai Link
+        const tanggal = inputTanggal.value;
+
+        if (!judul || !tanggal || !link) { // Validasi Link juga
+            alert("Judul, Tanggal, dan Link harus diisi.");
+            return;
+        }
+
+        if (currentEditId !== null) {
+            // LOGIKA SIMPAN EDIT
+            const index = newsData.findIndex(item => item.id === currentEditId);
+            if (index !== -1) {
+                newsData[index].judul = judul;
+                newsData[index].tanggal = tanggal;
+                newsData[index].link = link; // Simpan Link
+                alert('Berita berhasil diperbarui!');
+            }
+        } else {
+            // LOGIKA TAMBAH BARU
+            const newId = newsData.length > 0 ? Math.max(...newsData.map(n => n.id)) + 1 : 1;
+            const newItem = {
+                id: newId,
+                judul: judul,
+                tanggal: tanggal,
+                link: link // Tambah Link
+            };
+            newsData.push(newItem);
+            alert('Berita baru berhasil ditambahkan!');
+        }
+
+        saveNewsData(newsData); // Simpan ke localStorage
+        resetForm();
+        renderTable();
+    }
+    
+    function editItem(id) {
+        const itemToEdit = newsData.find(item => item.id === id);
+
+        if (itemToEdit) {
+            currentEditId = id;
+            
+            // Isi form dengan data yang akan diedit
+            inputJudul.value = itemToEdit.judul;
+            inputTanggal.value = itemToEdit.tanggal;
+            inputLink.value = itemToEdit.link; // Isi Link
+
+            // Ubah tampilan tombol dan judul form
+            formTitle.textContent = `Edit Item ID: ${id}`;
+            btnAddEdit.textContent = 'Simpan Perubahan';
+            btnAddEdit.classList.remove('btn-tambah');
+            btnAddEdit.classList.add('btn-simpan');
+            
+            // Scroll ke form edit
+            document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function deleteItem(id) {
+        if (confirm(`Anda yakin ingin menghapus Berita ID ${id}: ${newsData.find(item => item.id === id)?.judul}?`)) {
+            newsData = newsData.filter(item => item.id !== id);
+            
+            alert('Berita berhasil dihapus!');
+            saveNewsData(newsData); // Simpan ke localStorage setelah hapus
+            resetForm();
+            renderTable();
+        }
+    }
+    
+    // Agar fungsi bisa dipanggil dari HTML (onclick)
+    window.editItem = editItem;
+    window.deleteItem = deleteItem;
+    window.resetForm = resetForm;
+
+
+    // Inisialisasi saat DOM dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('btnAddEdit').addEventListener('click', handleFormSubmit);
+        // Penting: Simpan data awal jika belum ada di localStorage
+        if (localStorage.getItem(STORAGE_KEY) === null) {
+            saveNewsData(initialNewsData);
+        }
+        renderTable();
+    });
+
+</script>
+</body>
+
+</html>

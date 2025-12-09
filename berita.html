@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita PD Parkir (Replika)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset Dasar */
+        body, h1, h2, h3, p, ul, li {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f0f0f0; 
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* HEADER/NAVIGASI */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; 
+            background-color: #004d99; /* Biru gelap untuk navbar */
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+            margin-left: 20px;
+        }
+        
+        /* Placeholder untuk logo */
+        .logo-container img {
+            height: 35px;
+            margin-right: 5px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        nav ul li a.active,
+        nav ul li a:hover {
+            background-color: #0066cc; /* Biru sedikit lebih terang untuk hover/aktif */
+            /* Pastikan tidak ada border ekstra yang memperbesar elemen */
+            border-bottom: none; 
+        }
+
+        /* CONTAINER UTAMA (untuk konten dan sidebar) */
+        .page-content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* KONTEN UTAMA (Daftar Berita) */
+        .main-content {
+            flex: 3; /* Mengambil sebagian besar ruang */
+            background-color: white;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-top: none; /* Menghilangkan border atas untuk tampilan bersih */
+        }
+
+        .main-content h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #444;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .news-item {
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+
+        .news-item h2 {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: #004d99; /* Biru untuk link */
+            font-size: 14px;
+        }
+
+        /* Icon blue dot sebelum Read more */
+        .read-more::before {
+            content: "\2022"; /* Bullet point unicode */
+            color: #004d99;
+            font-size: 20px;
+            line-height: 0;
+            margin-right: 5px;
+        }
+
+        /* SIDEBAR (Widget Kuning) */
+        .sidebar {
+            flex: 1; /* Mengambil sisa ruang */
+            padding-top: 30px; /* Sejajar dengan H1 konten utama */
+        }
+
+        .help-widget {
+            background-color: #fffa3f; /* Kuning terang */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .help-widget h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .help-widget p {
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .help-widget button {
+            background-color: white;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .help-widget button:hover {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="logo remove bg.png" alt="Logo PD">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="beranda.html">Home</a></li>
+                <li><a href="tentang_kami.html">Tentang Kami</a></li>
+                <li><a href="Layanan.html">Layanan</a></li>
+                <li><a href="berita.html" class="active">Berita</a></li>
+                <li><a href="hubungi_kami.html">Hubungi Kami</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-content-wrapper">
+        
+        <section class="main-content">
+            <h1>Berita</h1>
+
+            <section class="main-content">
+    <h1>Berita</h1>
+
+    <div id="newsContainer">
+        <p>Memuat berita...</p>
+    </div>
+        </section>
+
+        <aside class="sidebar">
+            <div class="help-widget">
+                <h3>How can we help you?</h3>
+                <p>Contact us at the consulting temp office nearest to you or submit a business inquiry online.</p>
+                <a href="hubungi_kami.html"><button>Contacts</button></a>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+    // --- KONFIGURASI DAN INIITALISASI ---
+    
+    // Kunci yang sama dengan halaman admin untuk mengambil data
+    const STORAGE_KEY = 'newsDataAdmin'; 
+    const newsContainer = document.getElementById('newsContainer');
+
+    // --- FUNGSI HELPER ---
+
+    /**
+     * Fungsi untuk memformat tanggal dari YYYY-MM-DD menjadi DD Bulan YYYY
+     */
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        // Perlu trik replace(/-/g, '/') agar kompatibel dengan berbagai browser
+        const date = new Date(dateString.replace(/-/g, '/')); 
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('id-ID', options);
+    }
+
+    // --- FUNGSI UTAMA RENDERING ---
+
+    /**
+     * Mengambil data dari localStorage dan merender ke halaman user.
+     */
+    function renderUserNews() {
+        const storedData = localStorage.getItem(STORAGE_KEY);
+        let newsData = [];
+
+        // 1. Ambil Data
+        if (storedData) {
+            try {
+                newsData = JSON.parse(storedData);
+            } catch (e) {
+                console.error("Gagal mem-parsing data dari localStorage", e);
+                // Jika gagal parsing, biarkan data kosong
+            }
+        }
+
+        // Kosongkan penampung konten berita saat ini
+        if (newsContainer) {
+            newsContainer.innerHTML = '';
+        } else {
+            console.error("Elemen #newsContainer tidak ditemukan.");
+            return;
+        }
+
+
+        // 2. Cek Ketersediaan Data
+        if (newsData.length === 0) {
+            newsContainer.innerHTML = '<p>Belum ada berita atau kegiatan yang dipublikasikan.</p>';
+            return;
+        }
+
+        // 3. Urutkan Data (Berita Terbaru di Atas)
+        // Urutkan berdasarkan ID secara menurun (ID terbesar/terbaru di atas)
+        newsData.sort((a, b) => b.id - a.id);
+
+        // 4. Render ke Tampilan
+        newsData.forEach(item => {
+            const newsItem = document.createElement('div');
+            newsItem.className = 'news-item';
+            
+            // Masukkan Judul, Tanggal, dan Link (Read more)
+            newsItem.innerHTML = `
+                <h2>${item.judul}</h2>
+                <p style="font-size: 12px; color: #777; margin-bottom: 5px;">Dipublikasikan: ${formatDate(item.tanggal)}</p>
+                <a href="${item.link}" class="read-more" target="_blank">Read more</a>
+            `;
+            newsContainer.appendChild(newsItem);
+        });
+    }
+
+    // --- EKSEKUSI ---
+
+    // Panggil fungsi rendering saat dokumen (halaman) selesai dimuat
+    document.addEventListener('DOMContentLoaded', renderUserNews);
+</script>
+
+    
+</body>
+</html>

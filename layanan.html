@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layanan PD Parkir (Replika)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset Dasar */
+        body, h1, h2, h3, p, ul, li, table {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f0f0f0; 
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* HEADER/NAVIGASI */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; 
+            background-color: #004d99; 
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-right: auto; 
+            margin-left: 20px;
+        }
+        
+        /* Ganti dengan URL gambar valid Anda atau pastikan gambar ada */
+        .logo-container img {
+            height: 35px;
+            margin-right: 5px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a.active,
+        nav ul li a:hover {
+            background-color: #0066cc; 
+            border-bottom: none; 
+        }
+        
+        /* --- BAGIAN SUMMARY CARDS --- */
+        .summary-row-user {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .summary-card-user {
+            background-color: white;
+            padding: 15px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex-basis: 30%;
+        }
+
+        .summary-card-user .number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #004d99; 
+            margin-bottom: 5px;
+        }
+        
+        .summary-card-user .label {
+            font-size: 14px;
+            color: #555;
+        }
+        /* END BAGIAN SUMMARY CARDS */
+        
+        /* KONTEN UTAMA (Container untuk dua kolom) */
+        .main-content-wrapper {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        /* KOTAK KIRI: Bergerak di Bidang */
+        .bidang-container {
+            flex: 1; 
+            padding-right: 20px;
+            border-right: 1px solid #ddd;
+        }
+
+        .bidang-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .bidang-header h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #444;
+            padding: 0 10px;
+        }
+
+        .bidang-header::before {
+            content: "";
+            height: 40px;
+            width: 5px;
+            background-color: #004d99;
+            margin-right: 10px;
+        }
+        
+        .bidang-header::after {
+            content: "";
+            height: 40px;
+            width: 2px;
+            background-color: #ccc;
+            margin-left: 10px;
+        }
+
+
+        .bidang-item {
+            background-color: #0066cc; 
+            color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .bidang-item h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .bidang-item p {
+            font-size: 14px;
+        }
+
+        /* KOTAK KANAN: Produk & Layanan */
+        .produk-container {
+            flex: 2; 
+        }
+
+        .produk-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .produk-header h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #444;
+            padding: 0 10px;
+        }
+
+        .produk-header::before {
+            content: "";
+            height: 40px;
+            width: 5px;
+            background-color: #004d99;
+            margin-right: 10px;
+        }
+
+        .produk-container > p {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* Styling Tabel Dinamis */
+        .service-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .service-table th {
+            background-color: #0066cc; 
+            color: white;
+            text-align: left;
+            padding: 12px 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .service-table td {
+            background-color: white; 
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+            font-size: 14px;
+        }
+
+        .service-table tbody tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+        
+        /* Kontainer jika tidak ada data */
+        .no-data {
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 5px;
+            color: #555;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="logo remove bg.png" alt="Logo PD Parkir"> 
+        </div>
+        <nav>
+            <ul>
+                <li><a href="beranda.html">Home</a></li>
+                <li><a href="tentang_kami.html">Tentang Kami</a></li>
+                <li><a href="Layanan.html" class="active">Layanan</a></li>
+                <li><a href="berita.html">Berita</a></li>
+                <li><a href="hubungi_kami.html">Hubungi Kami</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="summary-row-user">
+        <div class="summary-card-user">
+            <div class="number" id="userTotalLayanan">0</div>
+            <div class="label">Layanan Aktif</div>
+        </div>
+        <div class="summary-card-user">
+            <div class="number" id="userTotalJukir">0</div>
+            <div class="label">Jukir Aktif</div>
+        </div>
+        <div class="summary-card-user">
+            <div class="number" id="userTotalKolektor">0</div>
+            <div class="label">Kolektor Aktif</div>
+        </div>
+    </div>
+    
+    <div class="main-content-wrapper">
+        
+        <div class="bidang-container">
+            <div class="bidang-header">
+                <h2>Bergerak di Bidang</h2>
+            </div>
+            <div class="bidang-item">
+                <h3>Pengelolaan Perparkiran</h3>
+                <p>PD Parkir Makassar Raya bergerak dalam bidang pengelolaan perparkiran.</p>
+            </div>
+            
+            <div class="bidang-item">
+                <h3>Pembenahan Pengelolaan</h3>
+                <p>Melakukan pembenahan bentuk pengelolaan perparkiran dari tepi jalan ke pengelolaan perparkiran.</p>
+            </div>
+            
+            <div class="bidang-item">
+                <h3>Kerja Sama</h3>
+                <p>Membahas kerja sama di bidang perparkiran dengan pihak lain, seperti PT Kalla Inti Karsa.</p>
+            </div>
+            
+            <div class="bidang-item">
+                <h3>Pengelolaan Areal Parkir</h3>
+                <p>Mengelola perparkiran di areal parkir milik pihak yang bekerja sama.</p>
+            </div>
+        </div>
+
+        <div class="produk-container">
+            <div class="produk-header">
+                <h2>Produk & Layanan</h2>
+            </div>
+            
+            <p>Berikut adalah produk dan layanan yang disediakan oleh PD Parkir Makassar Raya. Data ini diperbarui secara real-time dari panel admin.</p>
+
+            <div id="layananContainer">
+                <p class="no-data">Memuat daftar layanan...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- KONFIGURASI PENTING (PASTIKAN SAMA DENGAN ADMIN) ---
+        const STORAGE_KEY_LAYANAN = 'layananDataPerumdaParkir'; 
+        const STORAGE_KEY_SUMMARY = 'summaryDataPerumdaParkir';
+
+        const layananContainer = document.getElementById('layananContainer');
+        const userTotalLayananDisplay = document.getElementById('userTotalLayanan');
+        const userTotalJukirDisplay = document.getElementById('userTotalJukir');
+        const userTotalKolektorDisplay = document.getElementById('userTotalKolektor');
+
+        /**
+         * Mengambil data layanan dari localStorage.
+         */
+        function getLayananData() {
+            const storedData = localStorage.getItem(STORAGE_KEY_LAYANAN);
+            if (storedData) {
+                try {
+                    // Jika data ditemukan, parse data JSON
+                    return JSON.parse(storedData); 
+                } catch (e) {
+                    console.error("Gagal mem-parsing data layanan dari localStorage", e);
+                    return [];
+                }
+            }
+            // Kembalikan array kosong jika tidak ada data
+            return []; 
+        }
+        
+        /**
+         * Mengambil data ringkasan (Jukir, Kolektor) dari localStorage.
+         */
+        function getSummaryData() {
+            const storedData = localStorage.getItem(STORAGE_KEY_SUMMARY);
+            if (storedData) {
+                try {
+                    // Jika data ditemukan, parse data JSON
+                    return JSON.parse(storedData);
+                } catch (e) {
+                    console.error("Gagal mem-parsing data summary dari localStorage", e);
+                    // Kembalikan nilai default jika parsing gagal
+                    return { jukir: 0, kolektor: 0 }; 
+                }
+            }
+            // Default jika belum ada data
+            return { jukir: 0, kolektor: 0 }; 
+        }
+
+        /**
+         * Merender data layanan ke tabel.
+         */
+        function renderLayananUser() {
+            const layananData = getLayananData();
+            const summaryData = getSummaryData();
+            
+            layananContainer.innerHTML = ''; // Kosongkan container
+            
+            // Update Summary Cards
+            userTotalLayananDisplay.textContent = layananData.length;
+            // Pastikan nilai adalah angka sebelum ditampilkan
+            userTotalJukirDisplay.textContent = summaryData.jukir ? summaryData.jukir : 0; 
+            userTotalKolektorDisplay.textContent = summaryData.kolektor ? summaryData.kolektor : 0;
+            
+            if (layananData.length === 0) {
+                layananContainer.innerHTML = '<p class="no-data">Saat ini belum ada layanan yang dipublikasikan.</p>';
+                return;
+            }
+
+            // Buat struktur tabel
+            let tableHTML = `
+                <table class="service-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 35%;">Produk/Layanan</th>
+                            <th>Deskripsi</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+            // Isi baris tabel
+            layananData.forEach(item => {
+                // Pastikan item memiliki properti nama dan deskripsi
+                const nama = item.nama || 'Nama Layanan Tidak Diketahui'; 
+                const deskripsi = item.deskripsi || 'Tidak ada deskripsi.';
+                
+                tableHTML += `
+                    <tr>
+                        <td><strong>${nama}</strong></td>
+                        <td>${deskripsi}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += `
+                    </tbody>
+                </table>`;
+                
+            layananContainer.innerHTML = tableHTML;
+        }
+
+        // Eksekusi saat DOM dimuat
+        document.addEventListener('DOMContentLoaded', renderLayananUser);
+        
+        // PENTING: Mendengarkan perubahan di localStorage dari tab lain (misal: Admin Page)
+        window.addEventListener('storage', (event) => {
+            if (event.key === STORAGE_KEY_LAYANAN || event.key === STORAGE_KEY_SUMMARY) {
+                renderLayananUser();
+            }
+        });
+    </script>
+</body>
+</html>

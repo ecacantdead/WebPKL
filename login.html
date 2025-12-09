@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Perumda Parkir - Masuk ke Sistem</title>
+
+    <style>
+        /* Menggunakan gaya dari halaman 'Daftar' untuk konsistensi */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        /* --- Gaya Role Selector (Admin, User, CS) --- */
+
+        .role-selector {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .role-button {
+            flex: 1;
+            padding: 20px 0;
+            border: 1px solid #ccc;
+            background-color: #f7f7f7;
+            color: #555;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease-in-out;
+            outline: none;
+        }
+
+        .role-button:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        .role-button:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .role-button.active {
+            background-color: #ffffff;
+            color: #007bff;
+            font-weight: bold;
+            border-color: #007bff;
+            border-bottom-color: #ffffff;
+        }
+
+
+        /* --- Gaya Form Input dan Tombol Login --- */
+
+        .login-form input[type="text"],
+        .login-form input[type="password"],
+        #nomorServerContainer input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        /* Container untuk Nomor Server */
+        #nomorServerContainer {
+            /* Defaultnya terlihat karena Admin (role aktif pertama) membutuhkannya */
+            display: block;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Link "Buat Akun" */
+        .create-account-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: block;
+            margin-top: -10px;
+        }
+
+        .create-account-link:hover {
+            text-decoration: underline;
+        }
+
+        /* --- CSS ALERT (Modal Pop-up) --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 50px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            /* Pusatkan di tengah */
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        #alertMessage {
+            color: #dc3545;
+            /* Warna merah untuk pesan error */
+            font-weight: bold;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>MASUK KE SISTEM</h2>
+
+        <div class="role-selector" id="roleSelectorLogin">
+            <button class="role-button active" data-role="Admin" onclick="setActiveRole(this)">Admin</button>
+            <button class="role-button" data-role="User" onclick="setActiveRole(this)">User</button>
+            <button class="role-button" data-role="CS" onclick="setActiveRole(this)">Customer Service</button>
+        </div>
+
+        <form class="login-form" id="loginForm" onsubmit="return handleLogin(event)">
+            <input type="text" placeholder="Username / ID" required>
+            <input type="password" placeholder="Password" required>
+
+            <div id="nomorServerContainer">
+                <input type="text" id="nomorServerInput" placeholder="Nomor Server" required>
+            </div>
+
+            <button type="submit" class="login-button">LOGIN</button>
+            <a href="Daftar.html" class="create-account-link">Belum punya akun? Buat Akun di sini</a>
+        </form>
+    </div>
+
+    <div id="customAlert" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAlert()">&times;</span>
+            <p id="alertMessage">Terjadi kesalahan.</p>
+        </div>
+    </div>
+
+
+    <script>
+        // --- JavaScript (Logika Role dan Validasi) ---
+
+        const nomorServerContainer = document.getElementById('nomorServerContainer');
+        const nomorServerInput = document.getElementById('nomorServerInput');
+        const customAlert = document.getElementById('customAlert');
+        const alertMessage = document.getElementById('alertMessage');
+
+        // Nomor Server yang Diizinkan (HARUS SAMA DENGAN DI HALAMAN DAFTAR)
+        const ALLOWED_SERVER = {
+            'Admin': '010109',
+            'CS': '101008'
+        };
+
+        // --- FUNGSI UTAMA UNTUK MENGAMBIL DATA DARI LOCALSTORAGE ---
+        function getRegisteredAccounts() {
+            // Mengambil string JSON dari localStorage atau array kosong jika tidak ada
+            const storedData = localStorage.getItem('registeredAccounts');
+            try {
+                return storedData ? JSON.parse(storedData) : {};
+            } catch (e) {
+                console.error("Gagal memparsing data akun dari localStorage:", e);
+                return {};
+            }
+        }
+        // ----------------------------------------------------------------
+
+        /**
+         * Mengubah tombol role yang aktif dan mengontrol visibilitas Nomor Server
+         * @param {HTMLElement} activeElement Tombol yang diklik
+         */
+        function setActiveRole(activeElement) {
+            const allButtons = activeElement.parentElement.querySelectorAll('.role-button');
+            allButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            activeElement.classList.add('active');
+
+            const selectedRole = activeElement.getAttribute('data-role');
+
+            if (selectedRole === 'Admin' || selectedRole === 'CS') {
+                nomorServerContainer.style.display = 'block';
+                nomorServerInput.setAttribute('required', 'required');
+                nomorServerInput.value = '';
+            } else {
+                nomorServerContainer.style.display = 'none';
+                nomorServerInput.removeAttribute('required');
+                nomorServerInput.value = '';
+            }
+        }
+
+        /**
+         * Handler untuk proses Login, termasuk validasi Nomor Server dan Redirect
+         */
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const username = form.elements[0].value.toLowerCase(); // Gunakan lowercase
+            const password = form.elements[1].value;
+            const activeRole = document.querySelector('#roleSelectorLogin .role-button.active').getAttribute('data-role');
+
+            // 1. Validasi input dasar
+            if (!username || !password) {
+                showAlert('Username dan Password harus diisi!');
+                return false;
+            }
+
+            // --- Logika Otentikasi Menggunakan LOCALSTORAGE ---
+            const registeredAccounts = getRegisteredAccounts();
+            const account = registeredAccounts[username]; // Cari akun berdasarkan username
+
+            // 2. Cek Akun, Password, dan Role
+            if (!account || account.password !== password || account.role !== activeRole) {
+                showAlert('Username, Password, atau Role tidak cocok!');
+                return false;
+            }
+
+            // 3. Validasi Nomor Server (Hanya untuk Admin & CS)
+            if (activeRole === 'Admin' || activeRole === 'CS') {
+                const nomorServer = nomorServerInput.value;
+                const requiredServer = ALLOWED_SERVER[activeRole];
+
+                if (!nomorServer) {
+                    showAlert('Nomor Server wajib diisi!');
+                    return false;
+                }
+
+                if (nomorServer !== requiredServer) {
+                    showAlert('Nomor Server salah!');
+                    return false;
+                }
+            }
+
+            // --- REDIRECT SETELAH LOGIN BERHASIL ---
+
+            let redirectPage = '';
+            switch (activeRole) {
+                case 'Admin':
+                    redirectPage = 'beranda_admin.html';
+                    break;
+                case 'CS':
+                    redirectPage = 'customer_service.html';
+                    break;
+                case 'User':
+                    redirectPage = 'beranda_user.html';
+                    break;
+                default:
+                    showAlert('Role tidak valid. Tidak dapat masuk.');
+                    return false;
+            }
+
+            // Lakukan Redirect
+            showAlert(`Login Berhasil! Mengarahkan ke Beranda ${activeRole}...`);
+            setTimeout(() => {
+                 window.location.href = redirectPage;
+            }, 1500);
+
+            return false;
+        }
+
+        // --- Fungsi Alert (Modal Pop-up) ---
+
+        function showAlert(message) {
+            alertMessage.textContent = message;
+            customAlert.style.display = 'block';
+        }
+
+        function closeAlert() {
+            customAlert.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == customAlert) {
+                closeAlert();
+            }
+        }
+
+        // Inisialisasi tampilan awal saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+             // Pastikan elemen Nomor Server diinisialisasi dengan benar
+             if (document.querySelector('.role-button.active').getAttribute('data-role') === 'Admin') {
+                nomorServerContainer.style.display = 'block';
+                nomorServerInput.setAttribute('required', 'required');
+             }
+        });
+    </script>
+</body>
+
+</html>

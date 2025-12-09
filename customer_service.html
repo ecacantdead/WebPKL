@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PD PARKIR - Kelola Kontak Kami (CS)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* --- FONT & RESET DASAR --- */
+        body, h1, h2, p, ul, li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-family: Arial, sans-serif; 
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        body {
+            background-color: #f4f4f4; 
+            padding-bottom: 50px;
+        }
+
+        /* --- 1. TOP BAR (Header Biru) --- */
+        .top-bar {
+            background-color: #00427A;
+            color: white;
+            font-size: 13px;
+            padding: 10px 5%; 
+            position: sticky;
+            top: 0;
+            width: 90%;
+            z-index: 102;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-left .top-bar-logo {
+            height: 30px; 
+            width: auto; 
+            margin-left: 15px; 
+        }
+
+        .back-button {
+            color: white; 
+            font-size: 1.2em;
+        }
+
+        .logout-button {
+            background: transparent;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+        }
+
+        /* --- 2. HERO SECTION --- */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 35vh; 
+            overflow: hidden;
+            background-image: url(admin.png); 
+            background-repeat: no-repeat;
+            background-position: center top;
+            background-size: cover; 
+            z-index: 1;
+        }
+
+        .hero-section::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 77, 153, 0.7); 
+            z-index: 2; 
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 30px; 
+            left: 5%; 
+            color: white;
+            text-align: left;
+            z-index: 3; 
+        }
+
+        .hero-content h1 {
+            font-size: 3em; 
+            font-weight: 800; 
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        /* --- 3. MAIN CONTENT (Tabel Data & Detail) --- */
+        .main-content {
+            padding: 30px 5%;
+            z-index: 2;
+            position: relative; 
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid #007bff; 
+        }
+
+        .card h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #0056b3;
+            font-weight: 600;
+        }
+        
+        /* Desain Tabel */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+            text-align: left;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table th {
+            background-color: #f8f8f8;
+            color: #555;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Status cell styling */
+        .status-cell {
+            font-weight: bold;
+            text-align: center;
+            border-radius: 4px;
+            padding: 4px 8px;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+
+        .status-dijawab {
+            background-color: #CCE5FF; 
+            color: #004085; 
+            border: 1px solid #B8DAFF;
+        }
+
+        .status-dibaca {
+            background-color: #D4EDDA; 
+            color: #155724; 
+            border: 1px solid #C3E6CB;
+        }
+
+        .status-belum-dibaca, .status-tak-terjawab {
+            background-color: #F8D7DA; 
+            color: #721C24; 
+            border: 1px solid #F5C6CB;
+        }
+
+        .btn-aksi {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-aksi:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styling untuk kotak balasan admin */
+        #replyMessage {
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            resize: vertical; 
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        
+        #detailIsiPesan {
+            white-space: pre-wrap; 
+            background-color: #f9f9f9; 
+            padding: 15px; 
+            border-radius: 4px;
+            border: 1px dashed #e0e0e0;
+        }
+
+        /* Media Queries (Hanya menyertakan container utama) */
+        @media (max-width: 768px) {
+            .top-bar { padding: 10px 3%; width: 94%; }
+            .hero-content { left: 3%; }
+            .main-content { padding: 20px 3%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="top-left">
+          <a href="beranda_admin.html" class="back-button" title="Kembali"><i class="fas fa-arrow-left"></i></a>
+          <img src="logo remove bg.png" alt="Logo PD Parkir" class="top-bar-logo"> 
+        </div>
+        
+        <a href="login.html" class="logout-button" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </header>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>KELOLA KONTAK KAMI</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div id="pesanTableContainer">
+            </div>
+
+        <div class="card" id="detailPesanCard" style="display: none;">
+            <h2>Detail Pesan ID: <span id="detailId"></span></h2>
+            <p><strong>Dari:</strong> <span id="detailPengirim"></span></p>
+            <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+            <p><strong>Nomor HP:</strong> <span id="detailTelp"></span></p>
+            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+            <p><strong>Isi Pesan:</strong></p>
+            <p id="detailIsiPesan"></p>
+            
+            <h3 style="margin-top: 25px; font-size: 1.2em;">Tulis Balasan Admin:</h3>
+            <textarea id="replyMessage" placeholder="Tulis balasan Anda di sini, ini akan dimuat di body email..." rows="5"></textarea>
+
+            <div style="text-align: right; margin-top: 10px;">
+                
+                <button 
+                    class="btn-aksi" 
+                    style="background-color: #007bff;" 
+                    onclick="replyAndChangeStatus(
+                        document.getElementById('detailEmail').textContent, 
+                        document.getElementById('detailId').textContent
+                    )">
+                    Kirim Balasan & Ubah Status
+                </button>
+
+                <button class="btn-aksi" onclick="closeDetailCard()">Tutup</button>
+                
+                <button class="btn-aksi" style="background-color: #dc3545;" onclick="deletePesan(document.getElementById('detailId').textContent)">
+                    Hapus Permanen
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. Konfigurasi dan Deklarasi Global ---
+        const STORAGE_KEY_PESAN = 'contactMessagesPDparkir';
+        
+        let detailPesanCard; 
+        let replyMessageArea; 
+        let pesanTableContainer;
+
+        // --- 2. Inisialisasi DOM dan Event Listener Utama ---
+        document.addEventListener('DOMContentLoaded', () => {
+            detailPesanCard = document.getElementById('detailPesanCard');
+            replyMessageArea = document.getElementById('replyMessage');
+            pesanTableContainer = document.getElementById('pesanTableContainer');
+            
+            renderTable(); 
+        });
+
+        // --- 3. Fungsi Utilitas Tanggal (Disesuaikan untuk format: 24 November 2025) ---
+
+        function formatTimestamp(timestampValue, includeTime = true) {
+            if (!timestampValue) return 'N/A';
+            
+            const dateObj = new Date(timestampValue);
+            
+            if (isNaN(dateObj)) {
+                return 'Format Tanggal Rusak'; 
+            }
+            
+            const options = {
+                day: 'numeric',
+                month: 'long', // Menggunakan 'long' untuk nama bulan lengkap
+                year: 'numeric'
+            };
+
+            if (includeTime) {
+                options.hour = '2-digit';
+                options.minute = '2-digit';
+            }
+            
+            // Format ID-ID: Contoh output: 24 November 2025 21.52
+            return dateObj.toLocaleString('id-ID', options);
+        }
+        window.formatTimestamp = formatTimestamp; 
+
+        // --- 4. Fungsi Utama Manipulasi Data (Local Storage) ---
+
+        function getMessages() {
+            const data = localStorage.getItem(STORAGE_KEY_PESAN);
+            return data ? JSON.parse(data) : [];
+        }
+
+        function saveMessages(messages) {
+            localStorage.setItem(STORAGE_KEY_PESAN, JSON.stringify(messages));
+        }
+
+        function changeStatus(id, newStatus) {
+            let messages = getMessages();
+            const index = messages.findIndex(msg => msg.id === id);
+            if (index !== -1) {
+                messages[index].status = newStatus;
+                // Simpan timestampStatus tanpa waktu, hanya tanggal (opsional)
+                messages[index].timestampStatus = formatTimestamp(Date.now(), true); 
+
+                saveMessages(messages);
+                renderTable(); 
+            }
+        }
+        
+        function deletePesan(idString) {
+            const id = parseInt(idString);
+            if (!confirm(`Anda yakin ingin menghapus pesan ID ${id} ini secara permanen?`)) {
+                return;
+            }
+
+            let messages = getMessages();
+            messages = messages.filter(msg => msg.id !== id);
+            
+            saveMessages(messages);
+            closeDetailCard();
+            renderTable();
+            alert(`Pesan ID ${id} telah dihapus.`);
+        }
+        
+        window.deletePesan = deletePesan; 
+
+        // --- 5. Fungsi Utama Manipulasi UI (Render dan View) ---
+
+        function renderTable() {
+            const messages = getMessages();
+            
+            if (messages.length === 0) {
+                pesanTableContainer.innerHTML = '<p class="card">Tidak ada pesan masuk.</p>';
+                return;
+            }
+
+            let tableHTML = `
+                <div class="card">
+                    <h2>Daftar Pesan Masuk</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Pengirim</th>
+                                <th>Subjek (Pesan)</th>
+                                <th>Status</th>
+                                <th>Tanggal Status/Masuk</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            // Urutkan pesan, yang Belum Dibaca di atas
+            messages.sort((a, b) => {
+                if (a.status === 'Belum Dibaca') return -1;
+                if (b.status === 'Belum Dibaca') return 1;
+                return 0;
+            });
+
+            messages.forEach(msg => {
+                let statusClass;
+                if (msg.status === 'Dijawab') {
+                    statusClass = 'status-dijawab';
+                } else if (msg.status === 'Dibaca') {
+                    statusClass = 'status-dibaca';
+                } else {
+                    statusClass = 'status-belum-dibaca';
+                }
+                
+                // Gunakan timestampStatus jika ada, jika tidak, gunakan timestamp asli
+                const displayDate = msg.timestampStatus || formatTimestamp(msg.timestamp);
+                
+                // Perbaikan 'Pengirim': Menggunakan properti 'name'
+                const displayPengirim = msg.name || 'Undefined/Anonim'; 
+
+                tableHTML += `
+                    <tr>
+                        <td>${msg.id}</td>
+                        <td>${displayPengirim}</td>
+                        <td>${msg.message.substring(0, 50)}...</td>
+                        <td><span class="status-cell ${statusClass}">${msg.status}</span></td>
+                        <td>${displayDate}</td>
+                        <td>
+                            <button class="btn-aksi" onclick="viewDetail(${msg.id})">Lihat Detail</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            pesanTableContainer.innerHTML = tableHTML;
+        }
+        
+        window.renderTable = renderTable; 
+
+        function viewDetail(id) {
+            const messages = getMessages();
+            const message = messages.find(msg => msg.id === id);
+
+            if (message) {
+                // Perbaikan di sini juga: Menggunakan 'name'
+                document.getElementById('detailId').textContent = message.id;
+                document.getElementById('detailPengirim').textContent = message.name || 'Undefined/Anonim';
+                document.getElementById('detailEmail').textContent = message.email;
+                document.getElementById('detailTelp').textContent = message.phone || 'N/A';
+                document.getElementById('detailIsiPesan').textContent = message.message;
+                
+                replyMessageArea.value = ''; 
+                detailPesanCard.style.display = 'block';
+
+                if (message.status === 'Belum Dibaca') {
+                    changeStatus(id, 'Dibaca');
+                }
+            }
+        }
+        
+        window.viewDetail = viewDetail; 
+
+        function closeDetailCard() {
+            detailPesanCard.style.display = 'none';
+            replyMessageArea.value = ''; 
+        }
+        
+        window.closeDetailCard = closeDetailCard; 
+
+        // --- 6. Fungsi Respon (Balas Email) ---
+
+        function replyViaEmail(emailTarget, adminReply) {
+            const defaultBody = `Yth. Bapak/Ibu,\n\nTerima kasih atas pesan yang telah Anda sampaikan. Berikut adalah balasan resmi kami:\n\n---\n\n${adminReply}\n\n---\n\nSalam Hormat,\nAdmin PD PARKIR`;
+
+            const subject = encodeURIComponent("Respon Resmi dari PD PARKIR");
+            const body = encodeURIComponent(defaultBody);
+            
+            window.location.href = `mailto:${emailTarget}?subject=${subject}&body=${body}`;
+        }
+
+        function replyAndChangeStatus(emailTarget, idString) {
+            const id = parseInt(idString);
+            const adminReply = replyMessageArea.value.trim();
+            
+            if (adminReply.length < 5) {
+                alert("Harap isi kotak balasan dengan minimal 5 karakter sebelum mengirim.");
+                return;
+            }
+            
+            if (!confirm(`Anda yakin ingin mengirim balasan dan mengubah status Pesan ID ${id} menjadi 'Dijawab'?`)) {
+                return;
+            }
+
+            replyViaEmail(emailTarget, adminReply);
+            changeStatus(id, 'Dijawab');
+            
+            alert(`Aplikasi email Anda telah terbuka dengan isi balasan yang sudah dimuat. Silakan tekan KIRIM di aplikasi email Anda. Status pesan ID ${id} diubah menjadi 'Dijawab'.`);
+            
+            closeDetailCard();
+        }
+
+        window.replyAndChangeStatus = replyAndChangeStatus; 
+
+    </script>
+</body>
+</html>
